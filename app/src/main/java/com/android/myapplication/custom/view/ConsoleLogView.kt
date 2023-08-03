@@ -9,6 +9,6 @@ import com.android.myapplication.R
 class ConsoleLogView(context: Context, attrs: AttributeSet) : ConstraintLayout(context, attrs) {
 
     init {
-        LayoutInflater.from(context).inflate(R.layout.console_log_tab_view, this, true)
+        LayoutInflater.from(context).inflate(R.layout.console_log_view, this, true)
     }
 }
