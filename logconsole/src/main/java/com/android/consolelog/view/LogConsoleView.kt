@@ -1,16 +1,16 @@
-package com.android.myapplication.custom.view
+package com.android.consolelog.view
 
 import android.content.Context
-import android.support.constraint.ConstraintLayout
 import android.util.AttributeSet
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.Button
 import android.widget.LinearLayout
-import com.android.myapplication.R
+import androidx.constraintlayout.widget.ConstraintLayout
+import com.android.consolelog.R
 
-class ConsoleLogView(context: Context, private val attrs: AttributeSet) :
+class LogConsoleView(context: Context, private val attrs: AttributeSet) :
     ConstraintLayout(context, attrs) {
 
     private var consoleTabLayout: LinearLayout? = null
@@ -32,19 +32,19 @@ class ConsoleLogView(context: Context, private val attrs: AttributeSet) :
 
     private fun clearLogsOnEachTab(tabIndex: Int) {
         consoleTabLayout?.runCatching {
-            findViewWithTag<ConsoleLogTabView>(tabIndex).clearLogs()
+            findViewWithTag<LogConsoleTabView>(tabIndex).clearLogs()
         }?.getOrElse { Log.d(javaClass.simpleName, "Could not find view with tag `$tabIndex`") }
     }
 
     fun addTab(promptTextTag: String? = null) {
         consoleTabLayout?.apply {
-            val tab = promptTextTag?.let { ConsoleLogTabView(context, attrs, it) }
-                ?: ConsoleLogTabView(context, attrs)
+            val tab = promptTextTag?.let { LogConsoleTabView(context, attrs, it) }
+                ?: LogConsoleTabView(context, attrs)
             tab.apply {
                 layoutParams = LinearLayout.LayoutParams(
                     0,
                     LayoutParams.MATCH_PARENT,
-                    1.0f
+                    1.0f,
                 )
                 tag = tabIndexer++
             }.also(::addView)
@@ -53,19 +53,19 @@ class ConsoleLogView(context: Context, private val attrs: AttributeSet) :
 
     fun printLog(outputText: String, tabIndex: Int = 0) {
         consoleTabLayout?.runCatching {
-            findViewWithTag<ConsoleLogTabView>(tabIndex).printLog(outputText)
+            findViewWithTag<LogConsoleTabView>(tabIndex).printLog(outputText)
         }?.getOrElse { Log.d(javaClass.simpleName, "Could not find view with tag `$tabIndex`") }
     }
 
     fun hideTab(index: Int) {
         consoleTabLayout?.runCatching {
-            findViewWithTag<ConsoleLogTabView>(index).visibility = View.GONE
+            findViewWithTag<LogConsoleTabView>(index).visibility = View.GONE
         }?.getOrElse { Log.d(javaClass.simpleName, "Could not find view with tag `$index`") }
     }
 
     fun showTab(index: Int) {
         consoleTabLayout?.runCatching {
-            findViewWithTag<ConsoleLogTabView>(index).visibility = View.VISIBLE
+            findViewWithTag<LogConsoleTabView>(index).visibility = View.VISIBLE
         }?.getOrElse { Log.d(javaClass.simpleName, "Could not find view with tag `$index`") }
     }
 }
