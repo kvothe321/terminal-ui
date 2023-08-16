@@ -19,6 +19,7 @@ import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.LinearLayout
+import android.widget.ScrollView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.core.content.ContextCompat
@@ -76,6 +77,11 @@ internal class LogConsoleTabView @JvmOverloads constructor(
             setTextIsSelectable(true)
             movementMethod = LinkMovementMethod.getInstance()
         }.also(root::addView)
+
+        val scrollView = root.parent as? ScrollView
+        scrollView?.post {
+            scrollView.fullScroll(ScrollView.FOCUS_DOWN)
+        }
     }
 
     private fun formatText(spannableString: SpannableStringBuilder, text: String, regex: Regex) {
