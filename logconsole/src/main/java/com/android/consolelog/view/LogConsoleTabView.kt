@@ -23,7 +23,6 @@ import android.widget.ScrollView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.core.content.ContextCompat
-import androidx.core.text.HtmlCompat
 import com.android.consolelog.R
 
 internal class LogConsoleTabView @JvmOverloads constructor(
@@ -64,14 +63,12 @@ internal class LogConsoleTabView @JvmOverloads constructor(
 
         formatText(spannableString, outputText, creditCardRegex)
 
-        val formattedTextFromHtml = HtmlCompat.fromHtml(terminalOutputLine, HtmlCompat.FROM_HTML_MODE_COMPACT)
-
         TextView(context).apply {
             layoutParams = LayoutParams(
                 LayoutParams.MATCH_PARENT,
                 LayoutParams.WRAP_CONTENT,
             ).apply { bottomMargin = resources.getDimensionPixelSize(R.dimen.kv_unit_x2) }
-            text = formattedTextFromHtml
+            text = spannableString
             textSize =
                 resources.getDimension(R.dimen.kv_sp_unit_x3) / resources.displayMetrics.density
             setTextIsSelectable(true)

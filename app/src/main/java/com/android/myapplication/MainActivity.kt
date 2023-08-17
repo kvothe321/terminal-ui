@@ -13,7 +13,7 @@ class MainActivity : AppCompatActivity() {
 
         if (savedInstanceState == null) {
             consoleLog.addTab("assetlsit@log:~$")
-            consoleLog.addTab("pinfetcher@log:~$")
+            //consoleLog.addTab("pinfetcher@log:~$")
 
             consoleLog.printLog("some text=123e4567-e89b-12d3-a456-426655440000creditcard)=1234-5678-9012-3456   and other text 9876 5432 1098 7654 end")
 
