@@ -23,6 +23,7 @@ import android.widget.ScrollView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.core.content.ContextCompat
+import androidx.core.text.HtmlCompat
 import com.android.consolelog.R
 
 internal class LogConsoleTabView @JvmOverloads constructor(
@@ -30,10 +31,6 @@ internal class LogConsoleTabView @JvmOverloads constructor(
     attrs: AttributeSet,
     private val promptTextTag: String = "$>",
 ) : LinearLayout(context, attrs) {
-
-    companion object {
-        private const val START_INDEX = 0
-    }
 
     init {
         LayoutInflater.from(context).inflate(R.layout.console_log_tab_view, this, true)
@@ -50,7 +47,7 @@ internal class LogConsoleTabView @JvmOverloads constructor(
         val spannableString = SpannableStringBuilder(terminalOutputLine)
         spannableString.setSpan(
             ForegroundColorSpan(ContextCompat.getColor(context, R.color.prompt_tag)),
-            START_INDEX,
+            0,
             promptTextTag.length,
             Spannable.SPAN_EXCLUSIVE_INCLUSIVE,
         )
@@ -62,16 +59,19 @@ internal class LogConsoleTabView @JvmOverloads constructor(
             Spannable.SPAN_EXCLUSIVE_INCLUSIVE,
         )
 
-        val creditCardRegex = Regex("(\\d{4}[-\\s]?){4}")
+        val creditCardRegex =
+            Regex("[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}")
 
         formatText(spannableString, outputText, creditCardRegex)
+
+        val formattedTextFromHtml = HtmlCompat.fromHtml(terminalOutputLine, HtmlCompat.FROM_HTML_MODE_COMPACT)
 
         TextView(context).apply {
             layoutParams = LayoutParams(
                 LayoutParams.MATCH_PARENT,
                 LayoutParams.WRAP_CONTENT,
             ).apply { bottomMargin = resources.getDimensionPixelSize(R.dimen.kv_unit_x2) }
-            text = spannableString
+            text = formattedTextFromHtml
             textSize =
                 resources.getDimension(R.dimen.kv_sp_unit_x3) / resources.displayMetrics.density
             setTextIsSelectable(true)
@@ -89,7 +89,7 @@ internal class LogConsoleTabView @JvmOverloads constructor(
         for (range in indices) {
             val offset = promptTextTag.length + 1
             val startIndexOfWord = range.first + offset
-            val endIndexOfWord = range.last + offset
+            val endIndexOfWord = range.last + offset + 1
 
             spannableString.setSpan(
                 object : ReplacementSpan() {
@@ -138,7 +138,10 @@ internal class LogConsoleTabView @JvmOverloads constructor(
                     override fun onClick(widget: View) {
                         val clipboard =
                             context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-                        val clip = ClipData.newPlainText("text", text)
+                        val clip = ClipData.newPlainText(
+                            "text",
+                            text.subSequence(startIndexOfWord - offset, endIndexOfWord - offset)
+                        )
                         clipboard.setPrimaryClip(clip)
                         Toast.makeText(context, "Text copied to clipboard", Toast.LENGTH_SHORT)
                             .show()

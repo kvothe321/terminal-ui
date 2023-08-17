@@ -15,10 +15,10 @@ class MainActivity : AppCompatActivity() {
             consoleLog.addTab("assetlsit@log:~$")
             consoleLog.addTab("pinfetcher@log:~$")
 
-            consoleLog.printLog("some text creditcard=1234-5678-9012-3456 and other text 9876 5432 1098 7654 end")
+            consoleLog.printLog("some text=123e4567-e89b-12d3-a456-426655440000creditcard)=1234-5678-9012-3456   and other text 9876 5432 1098 7654 end")
 
             consoleLog.printLog(
-                "IN FETCHeyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5cERome text creditcard=1234-5678-9012-3456 and other text 9876 5432 1098 7654",
+                "IN FETCHeyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG123e4567-e89b-12d3-a456-4266554400004gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5cERome text creditcard=1234-5678-9012-3456  and other text 9876 5432 1098 7654  ",
                 1,
             )
         }
