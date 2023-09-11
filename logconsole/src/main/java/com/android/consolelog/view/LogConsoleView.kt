@@ -149,9 +149,10 @@ class LogConsoleView(context: Context, private val attrs: AttributeSet) :
     }
 }
 
-inline fun <reified T : Parcelable> Bundle.parcelable(key: String): T? = when {
+internal inline fun <reified T : Parcelable> Bundle.parcelable(key: String): T? = when {
     SDK_INT >= 33 -> getParcelable(key, T::class.java)
-    else -> @Suppress("DEPRECATION") getParcelable(key) as? T
+    else -> {
+        @Suppress("DEPRECATION")
+        getParcelable(key) as? T
+    }
 }
-
-

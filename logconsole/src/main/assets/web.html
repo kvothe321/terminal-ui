@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+            overflow-y: auto;
+            line-height: 1rem;
+        }
+
+        .terminal {
+            font-family: monospace;
+            background-color: black;
+            background-image: radial-gradient(
+                rgba(0, 30, 150, 0.75), black 120%
+            );
+            min-height: 100vh;
+            color: white;
+            padding: 10px;
+            display: flex;
+            flex-direction: column;
+            overflow-wrap: break-word;
+        }
+
+        .prompt {
+            color: #F3D82F;
+            text-shadow: 0 0 2px #F3D82F;
+            font-weight: bolder;
+        }
+
+        .text-line {
+            margin-left: 4px;
+        }
+
+        .clickable-text {
+            color: white;
+            background-color: rgb(249, 249, 218, .3);
+            border-radius: 4px;
+            padding-left: 4px;
+            padding-right: 4px;
+        }
+
+        .clickable-text:hover {
+            cursor: pointer;
+        }
+
+        .clickable-text:active {
+            background-color: rgb(249, 218, 249, .4);
+        }
+
+        .log-line {
+            margin-bottom: 8px;
+        }
+
+    </style>
+</head>
+<body>
+<div class="terminal">
+</div>
+
+<script>
+
+        function printLog(promptTextTag, outputText) {
+            const searchString = "[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}";
+
+            const regexPattern = new RegExp(searchString, 'g');
+
+            const matches = outputText.replace(regexPattern, (match) => {
+                return `<span class="clickable-text" onclick="copyToClipboard('${match}')">${match}</span>`;
+            });
+
+            var newLogLine = document.createElement("div");
+            var terminalOutputLine = `
+                <div class="log-line">
+                    <span class="prompt">` + promptTextTag + `</span>
+                    <span class="text-line">` + matches + `</span>
+                </div>
+            `
+
+            newLogLine.innerHTML = terminalOutputLine;
+            document.querySelector('.terminal').appendChild(newLogLine);
+            newLogLine.scrollIntoView({ behavior: "smooth", block: "end", inline: "nearest" });
+        }
+
+        function copyToClipboard(text) {
+            app.copyToClipboard(text);
+        }
+
+</script>
+</body>
+</html>
